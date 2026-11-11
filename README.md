@@ -23,30 +23,6 @@ The tool renders a live, color-coded terminal dashboard and simultaneously expor
 
 TradingDesk coordinates three specialized roles in a deterministic pipeline:
 
-```mermaid
-flowchart TD
-    subgraph DataIngestion["1. Data Ingestion Layer"]
-        MD[yfinance FastInfo & Fundamentals]
-        OD[Options Chain: Strikes, IV, Volume & Spreads]
-        ND[Yahoo Finance Live RSS Headlines]
-    end
-
-    subgraph Analytics["2. Offline Quantitative & Risk Engines"]
-        direction TB
-        RE["Market Researcher\n• Lexicon sentiment scoring\n• Catalyst & corporate driver synthesis"]
-        QE["Quantitative Analyst (Quant)\n• Analytical Black-Scholes Greeks\n• 1-SD Expected Move\n• Expiration P/L table (-2σ to +2σ)"]
-        RO["Risk & Compliance Officer\n• 3-part checklist: Liquidity, Event Risk, Leverage\n• Synthesized 'Bear Case' & worst-case drawdown\n• Dynamic Stop-Loss levels & GO / NO-GO verdict"]
-    end
-
-    subgraph Output["3. Presentation Layer"]
-        CLI[Rich Interactive Terminal UI]
-        MD_EXP[Markdown Report Exporter: reports/{TICKER}_analysis.md]
-    end
-
-    DataIngestion --> Analytics
-    Analytics --> Output
-```
-
 1. **Market Researcher** ([`tradingdesk.research`](file:///src/tradingdesk/research)):
    - Ingests real-time company news via Yahoo Finance RSS.
    - Evaluates offline financial sentiment using headline lexicon dictionaries, Wall Street recommendation keys, and 52-week price channels.
@@ -220,7 +196,7 @@ TradingDesk/
   - Added deterministic `GO`, `CAUTION`, and `NO-GO` verdict evaluation with rationale.
   - Added unit test suite in [`tests/test_risk.py`](file:///tests/test_risk.py).
 
-### **v0.3.0 (2026-11-10) — Sprint 2: Quantitative Engine & Market Research Analysis**
+### **v0.3.0 (2026-11-09) — Sprint 2: Quantitative Engine & Market Research Analysis**
 * **Quantitative Math & Research:**
   - Implemented analytical Black-Scholes-Merton option pricing and Greeks in [`tradingdesk.quant.black_scholes`](file:///src/tradingdesk/quant/black_scholes.py): Call/Put Delta, Gamma, daily Theta decay, and Vega.
   - Implemented $1\sigma$ Expected Move calculator with straddle pricing blend and range boundaries in [`tradingdesk.quant.expected_move`](file:///src/tradingdesk/quant/expected_move.py).
@@ -229,7 +205,7 @@ TradingDesk/
   - Added market context generator in [`tradingdesk.research.context`](file:///src/tradingdesk/research/context.py).
   - Added quantitative unit tests in [`tests/test_quant.py`](file:///tests/test_quant.py).
 
-### **v0.2.0 (2026-11-10) — Sprint 1: Domain Models & Market Data Ingestion**
+### **v0.2.0 (2026-11-09) — Sprint 1: Domain Models & Market Data Ingestion**
 * **Data Ingestion Layer & Contracts:**
   - Defined strict Pydantic schemas in [`tradingdesk.models`](file:///src/tradingdesk/models) (`MarketQuote`, `Greeks`, `ExpectedMove`, `PnLRow`, `OptionsAnalysis`, `ChecklistItem`, `RiskAudit`, `DeskReport`).
   - Implemented live Yahoo Finance RSS headline fetcher with XML parsing in [`tradingdesk.data.news_data`](file:///src/tradingdesk/data/news_data.py).
